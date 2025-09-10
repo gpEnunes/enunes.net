@@ -1,0 +1,3 @@
+User-agent: *
+Allow: /
+Sitemap: https://enunes.net/sitemap.xml
