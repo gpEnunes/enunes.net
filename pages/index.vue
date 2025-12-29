@@ -1,16 +1,6 @@
 ﻿<template>
   <div>
-    <header>
-      <div class="brand">Emerson Nunes — Fullstack</div>
-      <nav class="nav-links" aria-label="Main navigation">
-        <a href="#">Home</a>
-        <a href="#demo">Demo</a>
-        <a href="#projects">Projects</a>
-        <a href="#about">About</a>
-        <a href="#blog">Blog</a>
-        <a href="#contact">Contact</a>
-      </nav>
-    </header>
+    <Navbar />
     <section class="hero">
       <h1>Do dado bruto ao insight elegante</h1>
       <p>
@@ -59,6 +49,7 @@
 
 <script setup>
 import { onMounted } from 'vue'
+import Navbar from '~/components/Navbar.vue'
 
 onMounted(() => {
   const projects = [

@@ -2,6 +2,7 @@
 
 export default defineNuxtConfig({
   compatibilityDate: '2025-12-29',
+  modules: ['@nuxtjs/tailwindcss'],
   $production: {
     routeRules: {
       '/**': { isr: true }
@@ -19,7 +20,7 @@ export default defineNuxtConfig({
       ]
     }
   },
-  css: ['~/assets/css/tailwind.css', '~/assets/css/theme.css'],
+  css: ['~/assets/css/theme.css'],
   build: {
     postcss: {
       postcssOptions: {
