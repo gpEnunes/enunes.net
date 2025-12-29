@@ -1,14 +1,7 @@
 ﻿<template>
   <div>
     <Navbar />
-    <section id="hero" class="hero">
-      <h1>From raw data to elegant insight</h1>
-      <p>
-        Split-screen demo combining code and visual execution: compute Top 5
-        tags and map results to categories and a timeline.
-      </p>
-      <a class="cta" href="#demo">See demo</a>
-    </section>
+    <Hero />
     <section
       id="demo"
       class="split"
@@ -50,6 +43,7 @@
 <script setup>
 import { onMounted } from 'vue'
 import Navbar from '~/components/Navbar.vue'
+import Hero from '~/components/Hero.vue'
 
 onMounted(() => {
   const projects = [
