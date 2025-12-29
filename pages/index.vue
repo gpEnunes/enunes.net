@@ -1,13 +1,13 @@
 ﻿<template>
   <div>
     <Navbar />
-    <section class="hero">
-      <h1>Do dado bruto ao insight elegante</h1>
+    <section id="hero" class="hero">
+      <h1>From raw data to elegant insight</h1>
       <p>
-        Split-screen com código e execução visual: sort de grandes volumes em
-        “Top 5” e mapeamento para categorias/timeline.
+        Split-screen demo combining code and visual execution: compute Top 5
+        tags and map results to categories and a timeline.
       </p>
-      <a class="cta" href="#demo">Ver demonstração</a>
+      <a class="cta" href="#demo">See demo</a>
     </section>
     <section
       id="demo"
@@ -169,22 +169,22 @@ onMounted(() => {
   }
 
   const codeLines = [
-    `// Dados de projetos (simulação de grande volume)`,
+    `// Sample project data (simulated large volume)`,
     `const projects = /* ... */;`,
-    `// 1) MAP: coletar todas as tags`,
+    `// 1) MAP: collect all tags`,
     `const allTags = projects.flatMap(p => p.tags);`,
-    `// 2) COUNT: frequências por tag`,
+    `// 2) COUNT: frequencies by tag`,
     `const freq = countFreq(allTags);`,
     `// 3) SORT: Top 5 tags`,
     `const top = sortDesc(freq).slice(0, 5);`,
     `renderTopBars(top);`,
-    `// 4) MAP: agrupar projetos por tag`,
+    `// 4) MAP: group projects by tag`,
     `const groupedByTag = groupByTag(projects);`,
     `renderCategoryChips(groupedByTag);`,
-    `// 5) MAP: timeline por ano`,
+    `// 5) MAP: timeline by year`,
     `const byYear = groupByYear(projects);`,
     `renderTimeline(byYear);`,
-    `// Insight: evolução de stack e foco por período`,
+    `// Insight: evolution of stack and focus over time`,
   ]
 
   let lineIndex = 0,

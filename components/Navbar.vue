@@ -1,25 +1,17 @@
-<template>
+﻿<template>
   <header
     class="sticky top-0 z-40 backdrop-blur bg-black/50 border-b border-white/5"
   >
     <div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
       <div class="flex items-center justify-between h-14">
-        <div class="flex items-center">
-          <a
-            href="#"
-            class="text-sm md:text-base font-semibold tracking-tight text-transparent bg-clip-text bg-gradient-to-r from-indigo-500 via-sky-400 to-teal-400"
-          >
-            Emerson Nunes
-          </a>
-        </div>
         <nav
           class="hidden md:flex items-center space-x-2"
           aria-label="Main navigation"
         >
           <a
-            href="#"
+            href="#hero"
             class="text-sm font-medium px-3 py-2 rounded-md hover:bg-white/5"
-            >Início</a
+            >Home</a
           >
           <a
             href="#demo"
@@ -34,7 +26,7 @@
           <a
             href="#about"
             class="text-sm font-medium px-3 py-2 rounded-md hover:bg-white/5"
-            >About me</a
+            >About</a
           >
           <a
             href="#blog"
@@ -44,9 +36,10 @@
           <a
             href="#contact"
             class="text-sm font-medium px-3 py-2 rounded-md hover:bg-white/5"
-            >Contacts</a
+            >Contact</a
           >
         </nav>
+
         <div class="md:hidden">
           <button
             @click="open = !open"
@@ -79,13 +72,14 @@
         </div>
       </div>
     </div>
+
     <transition name="fade">
       <div v-if="open" class="md:hidden border-t border-white/5 bg-black/60">
         <div class="px-4 py-3 space-y-1">
           <a
-            href="#"
+            href="#hero"
             class="block text-sm font-medium px-3 py-2 rounded-md hover:bg-white/5"
-            >Início</a
+            >Home</a
           >
           <a
             href="#demo"
@@ -100,7 +94,7 @@
           <a
             href="#about"
             class="block text-sm font-medium px-3 py-2 rounded-md hover:bg-white/5"
-            >About me</a
+            >About</a
           >
           <a
             href="#blog"
@@ -110,7 +104,7 @@
           <a
             href="#contact"
             class="block text-sm font-medium px-3 py-2 rounded-md hover:bg-white/5"
-            >Contacts</a
+            >Contact</a
           >
         </div>
       </div>
