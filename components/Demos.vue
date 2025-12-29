@@ -29,39 +29,14 @@
         <h3 id="vizTitle" class="text-lg font-medium text-white" ref="vizTitle">
           Demo output
         </h3>
-        <div class="viz-tabs">
-          <button
-            class="tab px-2 py-1 text-sm bg-white/5 rounded mr-2"
-            data-view="top"
-          >
-            Top
-          </button>
-          <button
-            class="tab px-2 py-1 text-sm bg-white/5 rounded mr-2"
-            data-view="map"
-          >
-            Map
-          </button>
-          <button
-            class="tab px-2 py-1 text-sm bg-white/5 rounded"
-            data-view="timeline"
-          >
-            Timeline
-          </button>
+        <div class="viz-tabs flex gap-2">
+          <button @click="selectDemo('cards')" :class="btnClass('cards')" class="px-2 py-1 text-sm rounded">Organize</button>
+          <button @click="selectDemo('drag')" :class="btnClass('drag')" class="px-2 py-1 text-sm rounded">Drag & Drop</button>
+          <button @click="selectDemo('clock')" :class="btnClass('clock')" class="px-2 py-1 text-sm rounded">Local Time</button>
         </div>
       </div>
-      <div id="viz" class="mt-4 space-y-4">
-        <div class="bars space-y-2" ref="bars"></div>
-        <div
-          class="chips flex flex-wrap gap-2"
-          ref="chips"
-          style="display: none"
-        ></div>
-        <div
-          class="timeline space-y-2"
-          ref="timeline"
-          style="display: none"
-        ></div>
+      <div id="viz" class="mt-4">
+        <component :is="currentDemoComponent" />
       </div>
     </div>
   </section>
@@ -194,23 +169,42 @@ function renderTimeline(byYear) {
     })
 }
 
-const codeLines = [
-  `// Demo dataset - projects`,
-  `const projects = /* ... */;`,
-  `// 1) MAP: collect all tags`,
-  `const allTags = projects.flatMap(p => p.tags);`,
-  `// 2) COUNT: frequencies by tag`,
-  `const freq = countFreq(allTags);`,
-  `// 3) SORT: Top 5 tags`,
-  `const top = sortDesc(freq).slice(0, 5);`,
-  `renderTopBars(top);`,
-  `// 4) MAP: group projects by tag`,
-  `const groupedByTag = groupByTag(projects);`,
-  `renderCategoryChips(groupedByTag);`,
-  `// 5) MAP: timeline by year`,
-  `const byYear = groupByYear(projects);`,
-  `renderTimeline(byYear);`,
-]
+import DemoCards from './DemoCards.vue'
+import DemoDragDrop from './DemoDragDrop.vue'
+import DemoClock from './DemoClock.vue'
+
+import { ref as r } from 'vue'
+
+const activeDemo = r('cards')
+
+const demoComponents = {
+  cards: DemoCards,
+  drag: DemoDragDrop,
+  clock: DemoClock,
+}
+
+const codeLinesMap = {
+  cards: [
+    `// Cards demo: organize and sort items`,
+    `cards = [ {title, year, desc}, ... ]`,
+    `shuffle()`,
+    `sortByName()`,
+    `moveUp(index)`,
+  ],
+  drag: [
+    `// Drag & Drop demo: reorderable list`,
+    `onDragStart(e, idx)`,
+    `onDrop(e, idx)`,
+    `items.splice(...)`,
+  ],
+  clock: [
+    `// Clock demo: show local time for timezone`,
+    `Intl.DateTimeFormat(timeZone).format(new Date())`,
+    `setInterval(update, 1000)`,
+  ],
+}
+
+let codeLines = codeLinesMap[activeDemo.value]
 
 function startCodeTyping() {
   const el = codeEl.value
@@ -274,6 +268,30 @@ function triggerViz(i) {
 }
 
 onMounted(() => {
+  // initialize with selected demo
+  startTypingForDemo(activeDemo.value)
+})
+
+function currentDemoComponent() {
+  return demoComponents[activeDemo.value]
+}
+
+function btnClass(key) {
+  return activeDemo.value === key ? 'bg-white/10 text-white' : 'bg-white/5 text-gray-300'
+}
+
+function selectDemo(key) {
+  activeDemo.value = key
+  startTypingForDemo(key)
+}
+
+function startTypingForDemo(key) {
+  const el = codeEl.value
+  if (!el) return
+  el.textContent = ''
+  codeLines = codeLinesMap[key] || []
+  startCodeTyping()
+}
   // Tabs
   const root = codePanel.value?.parentElement
   if (root) {
