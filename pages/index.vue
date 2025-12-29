@@ -2,16 +2,38 @@
   <div>
     <header>
       <div class="brand">Emerson Nunes — Fullstack</div>
+      <nav class="nav-links" aria-label="Main navigation">
+        <a href="#">Home</a>
+        <a href="#demo">Demo</a>
+        <a href="#projects">Projects</a>
+        <a href="#about">About</a>
+        <a href="#blog">Blog</a>
+        <a href="#contact">Contact</a>
+      </nav>
     </header>
     <section class="hero">
       <h1>Do dado bruto ao insight elegante</h1>
-      <p>Split-screen com código e execução visual: sort de grandes volumes em “Top 5” e mapeamento para categorias/timeline.</p>
+      <p>
+        Split-screen com código e execução visual: sort de grandes volumes em
+        “Top 5” e mapeamento para categorias/timeline.
+      </p>
       <a class="cta" href="#demo">Ver demonstração</a>
     </section>
-    <section id="demo" class="split" aria-label="Seção com execução visual do código">
-      <div class="code-panel" role="region" aria-label="Código com efeito typewriter">
+    <section
+      id="demo"
+      class="split"
+      aria-label="Seção com execução visual do código"
+    >
+      <div
+        class="code-panel"
+        role="region"
+        aria-label="Código com efeito typewriter"
+      >
         <div class="code-header">
-          <div class="dots"><span class="dot red"></span><span class="dot yellow"></span><span class="dot green"></span></div>
+          <div class="dots">
+            <span class="dot red"></span><span class="dot yellow"></span
+            ><span class="dot green"></span>
+          </div>
           <span>storytelling.js</span>
         </div>
         <pre id="code"><span class="cursor" aria-hidden="true"></span></pre>
@@ -27,8 +49,8 @@
         </div>
         <div id="viz">
           <div class="bars" id="bars"></div>
-          <div class="chips" id="chips" style="display:none;"></div>
-          <div class="timeline" id="timeline" style="display:none;"></div>
+          <div class="chips" id="chips" style="display: none"></div>
+          <div class="timeline" id="timeline" style="display: none"></div>
         </div>
       </div>
     </section>
@@ -40,22 +62,56 @@ import { onMounted } from 'vue'
 
 onMounted(() => {
   const projects = [
-    { name: 'Portal Educação', year: 2017, tags: ['PHP', 'Vue', 'MySQL', 'Docker'] },
-    { name: 'E-commerce A', year: 2018, tags: ['PHP', 'Laravel', 'Vue', 'Stripe', 'Redis'] },
-    { name: 'Analytics Dashboard', year: 2019, tags: ['Node', 'TypeScript', 'Vue', 'Postgres', 'Docker'] },
-    { name: 'ERP Interno', year: 2020, tags: ['PHP', 'Symfony', 'TypeScript', 'Docker', 'RabbitMQ'] },
-    { name: 'Portal Saúde', year: 2021, tags: ['PHP', 'Laravel', 'Vue', 'MySQL', 'Docker'] },
-    { name: 'Fintech Reports', year: 2022, tags: ['TypeScript', 'React', 'Postgres', 'Docker', 'Kafka'] },
-    { name: 'Plataforma IoT', year: 2023, tags: ['Node', 'TypeScript', 'Vue', 'TimescaleDB', 'Docker'] },
-    { name: 'AI Ops PoC', year: 2024, tags: ['Python', 'TypeScript', 'Vue', 'Docker', 'Postgres'] }
+    {
+      name: 'Portal Educação',
+      year: 2017,
+      tags: ['PHP', 'Vue', 'MySQL', 'Docker'],
+    },
+    {
+      name: 'E-commerce A',
+      year: 2018,
+      tags: ['PHP', 'Laravel', 'Vue', 'Stripe', 'Redis'],
+    },
+    {
+      name: 'Analytics Dashboard',
+      year: 2019,
+      tags: ['Node', 'TypeScript', 'Vue', 'Postgres', 'Docker'],
+    },
+    {
+      name: 'ERP Interno',
+      year: 2020,
+      tags: ['PHP', 'Symfony', 'TypeScript', 'Docker', 'RabbitMQ'],
+    },
+    {
+      name: 'Portal Saúde',
+      year: 2021,
+      tags: ['PHP', 'Laravel', 'Vue', 'MySQL', 'Docker'],
+    },
+    {
+      name: 'Fintech Reports',
+      year: 2022,
+      tags: ['TypeScript', 'React', 'Postgres', 'Docker', 'Kafka'],
+    },
+    {
+      name: 'Plataforma IoT',
+      year: 2023,
+      tags: ['Node', 'TypeScript', 'Vue', 'TimescaleDB', 'Docker'],
+    },
+    {
+      name: 'AI Ops PoC',
+      year: 2024,
+      tags: ['Python', 'TypeScript', 'Vue', 'Docker', 'Postgres'],
+    },
   ]
 
-  const countFreq = arr => arr.reduce((acc, t) => (acc[t] = (acc[t] || 0) + 1, acc), {})
-  const sortDesc = obj => Object.entries(obj).sort((a, b) => b[1] - a[1])
-  const groupByYear = list => list.reduce((acc, p) => ((acc[p.year] ?? []).push(p), acc), {})
-  const groupByTag = list => {
+  const countFreq = (arr) =>
+    arr.reduce((acc, t) => ((acc[t] = (acc[t] || 0) + 1), acc), {})
+  const sortDesc = (obj) => Object.entries(obj).sort((a, b) => b[1] - a[1])
+  const groupByYear = (list) =>
+    list.reduce((acc, p) => ((acc[p.year] ?? []).push(p), acc), {})
+  const groupByTag = (list) => {
     const g = {}
-    list.forEach(p => p.tags.forEach(tag => (g[tag] ??= []).push(p.name)))
+    list.forEach((p) => p.tags.forEach((tag) => (g[tag] ??= []).push(p.name)))
     return g
   }
 
@@ -115,7 +171,7 @@ onMounted(() => {
         time.textContent = year
         const desc = document.createElement('div')
         desc.className = 'desc'
-        desc.textContent = items.map(i => i.name).join(' • ')
+        desc.textContent = items.map((i) => i.name).join(' • ')
         ev.append(time, desc)
         tl.appendChild(ev)
       })
@@ -137,10 +193,11 @@ onMounted(() => {
     `// 5) MAP: timeline por ano`,
     `const byYear = groupByYear(projects);`,
     `renderTimeline(byYear);`,
-    `// Insight: evolução de stack e foco por período`
+    `// Insight: evolução de stack e foco por período`,
   ]
 
-  let lineIndex = 0, charIndex = 0
+  let lineIndex = 0,
+    charIndex = 0
   const codeEl = document.getElementById('code')
 
   function stepType() {
@@ -155,7 +212,11 @@ onMounted(() => {
     if (charIndex <= line.length) {
       if (cur) cur.remove()
       const chunk = line.substring(0, charIndex)
-      codeEl.innerHTML = codeEl.innerHTML + chunk + (charIndex === line.length ? '\n' : '') + '<span class="cursor"></span>'
+      codeEl.innerHTML =
+        codeEl.innerHTML +
+        chunk +
+        (charIndex === line.length ? '\n' : '') +
+        '<span class="cursor"></span>'
       charIndex++
       setTimeout(stepType, 14)
     } else {
@@ -169,7 +230,7 @@ onMounted(() => {
   function triggerViz(i) {
     switch (i) {
       case 6: {
-        const freq = countFreq(projects.flatMap(p => p.tags))
+        const freq = countFreq(projects.flatMap((p) => p.tags))
         const top = sortDesc(freq)
         document.getElementById('vizTitle').textContent = 'Top 5 tags (sort)'
         document.getElementById('bars').style.display = ''
@@ -179,7 +240,8 @@ onMounted(() => {
         break
       }
       case 9: {
-        document.getElementById('vizTitle').textContent = 'Categorias por tag (map)'
+        document.getElementById('vizTitle').textContent =
+          'Categorias por tag (map)'
         document.getElementById('bars').style.display = 'none'
         document.getElementById('chips').style.display = ''
         document.getElementById('timeline').style.display = 'none'
@@ -187,7 +249,8 @@ onMounted(() => {
         break
       }
       case 12: {
-        document.getElementById('vizTitle').textContent = 'Timeline por ano (map)'
+        document.getElementById('vizTitle').textContent =
+          'Timeline por ano (map)'
         document.getElementById('bars').style.display = 'none'
         document.getElementById('chips').style.display = 'none'
         document.getElementById('timeline').style.display = ''
@@ -199,13 +262,15 @@ onMounted(() => {
     }
   }
 
-  document.querySelectorAll('.tab').forEach(btn => {
+  document.querySelectorAll('.tab').forEach((btn) => {
     btn.addEventListener('click', () => {
-      document.querySelectorAll('.tab').forEach(b => b.classList.remove('active'))
+      document
+        .querySelectorAll('.tab')
+        .forEach((b) => b.classList.remove('active'))
       btn.classList.add('active')
       const view = btn.dataset.view
       if (view === 'top') {
-        const freq = countFreq(projects.flatMap(p => p.tags))
+        const freq = countFreq(projects.flatMap((p) => p.tags))
         const top = sortDesc(freq)
         document.getElementById('vizTitle').textContent = 'Top 5 tags (sort)'
         document.getElementById('bars').style.display = ''
@@ -213,13 +278,15 @@ onMounted(() => {
         document.getElementById('timeline').style.display = 'none'
         renderTopBars(top)
       } else if (view === 'map') {
-        document.getElementById('vizTitle').textContent = 'Categorias por tag (map)'
+        document.getElementById('vizTitle').textContent =
+          'Categorias por tag (map)'
         document.getElementById('bars').style.display = 'none'
         document.getElementById('chips').style.display = ''
         document.getElementById('timeline').style.display = 'none'
         renderCategoryChips(groupByTag(projects))
       } else {
-        document.getElementById('vizTitle').textContent = 'Timeline por ano (map)'
+        document.getElementById('vizTitle').textContent =
+          'Timeline por ano (map)'
         document.getElementById('bars').style.display = 'none'
         document.getElementById('chips').style.display = 'none'
         document.getElementById('timeline').style.display = ''
@@ -228,14 +295,17 @@ onMounted(() => {
     })
   })
 
-  const obs = new IntersectionObserver(entries => {
-    entries.forEach(e => {
-      if (e.isIntersecting) {
-        stepType()
-        obs.disconnect()
-      }
-    })
-  }, { threshold: 0.25 })
+  const obs = new IntersectionObserver(
+    (entries) => {
+      entries.forEach((e) => {
+        if (e.isIntersecting) {
+          stepType()
+          obs.disconnect()
+        }
+      })
+    },
+    { threshold: 0.25 }
+  )
   const target = document.querySelector('.code-panel')
   if (target) obs.observe(target)
 })
