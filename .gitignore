@@ -1,0 +1,9 @@
+﻿node_modules/
+.nuxt/
+.output/
+dist/
+/.cache
+/.idea
+/.vscode
+*.local
+*.log
