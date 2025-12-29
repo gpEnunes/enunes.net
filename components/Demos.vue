@@ -1,42 +1,54 @@
 <template>
-  <section
-    id="demo"
-    class="split grid grid-cols-1 md:grid-cols-2 gap-6 max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-12"
-    aria-label="Demos"
-  >
-    <div
-      class="code-panel"
-      role="region"
-      aria-label="Código com efeito typewriter"
-      ref="codePanel"
-    >
-      <div class="code-header flex items-center justify-between">
-        <div class="dots flex items-center gap-1">
-          <span class="dot w-3 h-3 rounded-full bg-red-500"></span>
-          <span class="dot w-3 h-3 rounded-full bg-yellow-400"></span>
-          <span class="dot w-3 h-3 rounded-full bg-green-500"></span>
+  <section id="demo" class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
+    <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+      <!-- Code panel -->
+      <div ref="codePanel" class="code-panel">
+        <div class="flex items-center justify-between mb-3">
+          <div class="flex items-center gap-2">
+            <span class="w-3 h-3 rounded-full bg-red-500"></span>
+            <span class="w-3 h-3 rounded-full bg-yellow-400"></span>
+            <span class="w-3 h-3 rounded-full bg-green-500"></span>
+          </div>
+          <div class="text-xs text-gray-300">algorithms.js</div>
         </div>
-        <span class="text-xs text-gray-300">algorithms.js</span>
+        <pre
+          ref="codeEl"
+          class="bg-black/40 rounded-md p-4 text-sm text-gray-100 min-h-[180px] whitespace-pre-wrap"
+        ></pre>
       </div>
-      <pre
-        class="mt-3 bg-black/40 rounded-md p-4 text-sm text-gray-100 overflow-x-auto"
-        ref="codeEl"
-      ><span class="cursor" aria-hidden="true"></span></pre>
-    </div>
 
-    <div class="viz-panel" role="region" aria-label="Resultado do código">
-      <div class="viz-header flex items-center justify-between">
-        <h3 id="vizTitle" class="text-lg font-medium text-white" ref="vizTitle">
-          Demo output
-        </h3>
-        <div class="viz-tabs flex gap-2">
-          <button @click="selectDemo('cards')" :class="btnClass('cards')" class="px-2 py-1 text-sm rounded">Organize</button>
-          <button @click="selectDemo('drag')" :class="btnClass('drag')" class="px-2 py-1 text-sm rounded">Drag & Drop</button>
-          <button @click="selectDemo('clock')" :class="btnClass('clock')" class="px-2 py-1 text-sm rounded">Local Time</button>
+      <!-- Viz / demos selector -->
+      <div class="viz-panel">
+        <div class="flex items-center justify-between mb-3">
+          <h3 class="text-lg font-medium text-white">Demos</h3>
+          <div class="flex gap-2">
+            <button
+              @click="selectDemo('cards')"
+              :class="btnClass('cards')"
+              class="px-2 py-1 rounded text-sm"
+            >
+              Organize
+            </button>
+            <button
+              @click="selectDemo('drag')"
+              :class="btnClass('drag')"
+              class="px-2 py-1 rounded text-sm"
+            >
+              Drag & Drop
+            </button>
+            <button
+              @click="selectDemo('clock')"
+              :class="btnClass('clock')"
+              class="px-2 py-1 rounded text-sm"
+            >
+              Local Time
+            </button>
+          </div>
         </div>
-      </div>
-      <div id="viz" class="mt-4">
-        <component :is="currentDemoComponent" />
+
+        <div>
+          <component :is="demoComponents[activeDemo]" />
+        </div>
       </div>
     </div>
   </section>
@@ -44,138 +56,13 @@
 
 <script setup>
 import { ref, onMounted } from 'vue'
-
-const codeEl = ref(null)
-const codePanel = ref(null)
-const bars = ref(null)
-const chips = ref(null)
-const timeline = ref(null)
-const vizTitle = ref(null)
-
-const projects = [
-  {
-    name: 'Portal Educação',
-    year: 2017,
-    tags: ['PHP', 'Vue', 'MySQL', 'Docker'],
-  },
-  {
-    name: 'E-commerce A',
-    year: 2018,
-    tags: ['PHP', 'Laravel', 'Vue', 'Stripe', 'Redis'],
-  },
-  {
-    name: 'Analytics Dashboard',
-    year: 2019,
-    tags: ['Node', 'TypeScript', 'Vue', 'Postgres', 'Docker'],
-  },
-  {
-    name: 'ERP Interno',
-    year: 2020,
-    tags: ['PHP', 'Symfony', 'TypeScript', 'Docker', 'RabbitMQ'],
-  },
-  {
-    name: 'Portal Saúde',
-    year: 2021,
-    tags: ['PHP', 'Laravel', 'Vue', 'MySQL', 'Docker'],
-  },
-  {
-    name: 'Fintech Reports',
-    year: 2022,
-    tags: ['TypeScript', 'React', 'Postgres', 'Docker', 'Kafka'],
-  },
-  {
-    name: 'Plataforma IoT',
-    year: 2023,
-    tags: ['Node', 'TypeScript', 'Vue', 'TimescaleDB', 'Docker'],
-  },
-  {
-    name: 'AI Ops PoC',
-    year: 2024,
-    tags: ['Python', 'TypeScript', 'Vue', 'Docker', 'Postgres'],
-  },
-]
-
-const countFreq = (arr) =>
-  arr.reduce((acc, t) => ((acc[t] = (acc[t] || 0) + 1), acc), {})
-const sortDesc = (obj) => Object.entries(obj).sort((a, b) => b[1] - a[1])
-const groupByYear = (list) =>
-  list.reduce((acc, p) => ((acc[p.year] ??= []).push(p), acc), {})
-const groupByTag = (list) => {
-  const g = {}
-  list.forEach((p) => p.tags.forEach((tag) => (g[tag] ??= []).push(p.name)))
-  return g
-}
-
-function renderTopBars(entries) {
-  const el = bars.value
-  if (!el) return
-  el.innerHTML = ''
-  const max = Math.max(...entries.map(([_, v]) => v))
-  entries.slice(0, 5).forEach(([label, value]) => {
-    const row = document.createElement('div')
-    row.className = 'bar flex items-center gap-3'
-    const lab = document.createElement('div')
-    lab.className = 'bar-label w-32 text-sm text-gray-300'
-    lab.textContent = label
-    const fill = document.createElement('div')
-    fill.className = 'bar-fill bg-white/5 rounded h-3 flex-1 overflow-hidden'
-    const span = document.createElement('div')
-    span.style.width = '0%'
-    span.className = 'bg-indigo-500 h-3'
-    const val = document.createElement('div')
-    val.className = 'bar-value w-8 text-sm text-gray-300 text-right'
-    val.textContent = String(value)
-    fill.appendChild(span)
-    row.append(lab, fill, val)
-    el.appendChild(row)
-    requestAnimationFrame(() => {
-      span.style.width = `${(value / max) * 100}%`
-    })
-  })
-}
-
-function renderCategoryChips(grouped) {
-  const el = chips.value
-  if (!el) return
-  el.innerHTML = ''
-  Object.entries(grouped)
-    .sort((a, b) => b[1].length - a[1].length)
-    .slice(0, 12)
-    .forEach(([tag, names]) => {
-      const chip = document.createElement('div')
-      chip.className = 'chip bg-white/5 text-sm px-3 py-1 rounded text-gray-200'
-      chip.textContent = `${tag} · ${names.length}`
-      el.appendChild(chip)
-    })
-}
-
-function renderTimeline(byYear) {
-  const el = timeline.value
-  if (!el) return
-  el.innerHTML = ''
-  Object.entries(byYear)
-    .sort((a, b) => a[0] - b[0])
-    .forEach(([year, items]) => {
-      const ev = document.createElement('div')
-      ev.className = 'event'
-      const time = document.createElement('div')
-      time.className = 'time font-medium text-gray-100'
-      time.textContent = year
-      const desc = document.createElement('div')
-      desc.className = 'desc text-sm text-gray-300'
-      desc.textContent = items.map((i) => i.name).join(' • ')
-      ev.append(time, desc)
-      el.appendChild(ev)
-    })
-}
-
 import DemoCards from './DemoCards.vue'
 import DemoDragDrop from './DemoDragDrop.vue'
 import DemoClock from './DemoClock.vue'
 
-import { ref as r } from 'vue'
-
-const activeDemo = r('cards')
+const codeEl = ref(null)
+const codePanel = ref(null)
+const activeDemo = ref('cards')
 
 const demoComponents = {
   cards: DemoCards,
@@ -185,34 +72,36 @@ const demoComponents = {
 
 const codeLinesMap = {
   cards: [
-    `// Cards demo: organize and sort items`,
-    `cards = [ {title, year, desc}, ... ]`,
-    `shuffle()`,
-    `sortByName()`,
-    `moveUp(index)`,
+    '// Cards demo: organize and sort items',
+    'cards = [{title, year, desc}, ...]',
+    'shuffle()',
+    'sortByName()',
+    'moveUp(index)',
   ],
   drag: [
-    `// Drag & Drop demo: reorderable list`,
-    `onDragStart(e, idx)`,
-    `onDrop(e, idx)`,
-    `items.splice(...)`,
+    '// Drag & Drop demo: reorderable list',
+    'onDragStart(e, idx)',
+    'onDrop(e, idx)',
+    'items.splice(...)',
   ],
   clock: [
-    `// Clock demo: show local time for timezone`,
-    `Intl.DateTimeFormat(timeZone).format(new Date())`,
-    `setInterval(update, 1000)`,
+    '// Clock demo: show local time for timezone',
+    'Intl.DateTimeFormat(timeZone).format(new Date())',
+    'setInterval(update, 1000)',
   ],
 }
 
-let codeLines = codeLinesMap[activeDemo.value]
+let codeLines = []
 
 function startCodeTyping() {
   const el = codeEl.value
   if (!el) return
+  el.textContent = ''
+  codeLines = codeLinesMap[activeDemo.value] || []
   let lineIndex = 0
   let charIndex = 0
 
-  function stepType() {
+  function step() {
     if (lineIndex >= codeLines.length) return
     const line = codeLines[lineIndex]
     if (charIndex <= line.length) {
@@ -221,115 +110,31 @@ function startCodeTyping() {
         line.substring(0, charIndex) +
         (charIndex === line.length ? '\n' : '')
       charIndex++
-      setTimeout(stepType, 20)
+      setTimeout(step, 25)
     } else {
-      triggerViz(lineIndex)
+      // trigger simple viz action placeholder (no-op here)
       lineIndex++
       charIndex = 0
-      setTimeout(stepType, 250)
+      setTimeout(step, 200)
     }
   }
 
-  stepType()
-}
-
-function triggerViz(i) {
-  switch (i) {
-    case 6: {
-      const freq = countFreq(projects.flatMap((p) => p.tags))
-      const top = sortDesc(freq)
-      if (vizTitle.value) vizTitle.value.textContent = 'Top 5 tags (sort)'
-      if (bars.value) bars.value.style.display = ''
-      if (chips.value) chips.value.style.display = 'none'
-      if (timeline.value) timeline.value.style.display = 'none'
-      renderTopBars(top)
-      break
-    }
-    case 9: {
-      if (vizTitle.value)
-        vizTitle.value.textContent = 'Categorias por tag (map)'
-      if (bars.value) bars.value.style.display = 'none'
-      if (chips.value) chips.value.style.display = ''
-      if (timeline.value) timeline.value.style.display = 'none'
-      renderCategoryChips(groupByTag(projects))
-      break
-    }
-    case 12: {
-      if (vizTitle.value) vizTitle.value.textContent = 'Timeline por ano (map)'
-      if (bars.value) bars.value.style.display = 'none'
-      if (chips.value) chips.value.style.display = 'none'
-      if (timeline.value) timeline.value.style.display = ''
-      renderTimeline(groupByYear(projects))
-      break
-    }
-    default:
-      break
-  }
-}
-
-onMounted(() => {
-  // initialize with selected demo
-  startTypingForDemo(activeDemo.value)
-})
-
-function currentDemoComponent() {
-  return demoComponents[activeDemo.value]
+  step()
 }
 
 function btnClass(key) {
-  return activeDemo.value === key ? 'bg-white/10 text-white' : 'bg-white/5 text-gray-300'
+  return activeDemo.value === key
+    ? 'bg-white/10 text-white'
+    : 'bg-white/5 text-gray-300'
 }
 
 function selectDemo(key) {
   activeDemo.value = key
-  startTypingForDemo(key)
-}
-
-function startTypingForDemo(key) {
-  const el = codeEl.value
-  if (!el) return
-  el.textContent = ''
-  codeLines = codeLinesMap[key] || []
   startCodeTyping()
 }
-  // Tabs
-  const root = codePanel.value?.parentElement
-  if (root) {
-    root.querySelectorAll?.('.tab')?.forEach((btn) => {
-      btn.addEventListener('click', () => {
-        root
-          .querySelectorAll('.tab')
-          ?.forEach((b) => b.classList.remove('active'))
-        btn.classList.add('active')
-        const view = btn.dataset.view
-        if (view === 'top') {
-          const freq = countFreq(projects.flatMap((p) => p.tags))
-          const top = sortDesc(freq)
-          if (vizTitle.value) vizTitle.value.textContent = 'Top 5 tags (sort)'
-          if (bars.value) bars.value.style.display = ''
-          if (chips.value) chips.value.style.display = 'none'
-          if (timeline.value) timeline.value.style.display = 'none'
-          renderTopBars(top)
-        } else if (view === 'map') {
-          if (vizTitle.value)
-            vizTitle.value.textContent = 'Categorias por tag (map)'
-          if (bars.value) bars.value.style.display = 'none'
-          if (chips.value) chips.value.style.display = ''
-          if (timeline.value) timeline.value.style.display = 'none'
-          renderCategoryChips(groupByTag(projects))
-        } else {
-          if (vizTitle.value)
-            vizTitle.value.textContent = 'Timeline por ano (map)'
-          if (bars.value) bars.value.style.display = 'none'
-          if (chips.value) chips.value.style.display = 'none'
-          if (timeline.value) timeline.value.style.display = ''
-          renderTimeline(groupByYear(projects))
-        }
-      })
-    })
-  }
 
-  // Start typing when visible
+onMounted(() => {
+  // start typing when code panel is visible
   const obs = new IntersectionObserver(
     (entries) => {
       entries.forEach((e) => {

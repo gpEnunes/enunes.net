@@ -3,9 +3,21 @@
     <div class="flex items-center justify-between mb-4">
       <h4 class="text-white font-medium">Organize Cards</h4>
       <div class="flex gap-2">
-        <button @click="shuffle" class="px-2 py-1 bg-white/5 rounded text-sm">Shuffle</button>
-        <button @click="sortByName" class="px-2 py-1 bg-white/5 rounded text-sm">Sort A→Z</button>
-        <button @click="sortByYear" class="px-2 py-1 bg-white/5 rounded text-sm">Sort Year</button>
+        <button @click="shuffle" class="px-2 py-1 bg-white/5 rounded text-sm">
+          Shuffle
+        </button>
+        <button
+          @click="sortByName"
+          class="px-2 py-1 bg-white/5 rounded text-sm"
+        >
+          Sort A→Z
+        </button>
+        <button
+          @click="sortByYear"
+          class="px-2 py-1 bg-white/5 rounded text-sm"
+        >
+          Sort Year
+        </button>
       </div>
     </div>
 
@@ -19,8 +31,18 @@
           <div class="text-xs text-gray-400">{{ c.year }}</div>
         </div>
         <div class="mt-3 flex gap-2">
-          <button @click="moveUp(i)" class="px-2 py-1 bg-white/3 rounded text-sm">↑</button>
-          <button @click="moveDown(i)" class="px-2 py-1 bg-white/3 rounded text-sm">↓</button>
+          <button
+            @click="moveUp(i)"
+            class="px-2 py-1 bg-white/3 rounded text-sm"
+          >
+            ↑
+          </button>
+          <button
+            @click="moveDown(i)"
+            class="px-2 py-1 bg-white/3 rounded text-sm"
+          >
+            ↓
+          </button>
         </div>
       </div>
     </div>
