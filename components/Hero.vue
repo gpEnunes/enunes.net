@@ -1,6 +1,6 @@
 <template>
   <section
-    id="hero"
+    id="home"
     class="bg-gradient-to-b from-black/60 via-black/50 to-transparent text-white py-20"
   >
     <div
