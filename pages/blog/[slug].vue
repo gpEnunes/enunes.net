@@ -1,5 +1,7 @@
 <template>
-  <div class="min-h-screen bg-gradient-to-b from-slate-900 via-slate-900 to-slate-800">
+  <div
+    class="min-h-screen bg-gradient-to-b from-slate-900 via-slate-900 to-slate-800"
+  >
     <Navbar />
     <main class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 py-16">
       <article v-if="post" class="prose prose-invert max-w-none">
@@ -35,11 +37,14 @@
 </template>
 
 <script setup>
-import { ref, onMounted } from 'vue'
 import { useRoute } from 'vue-router'
 
 const route = useRoute()
-const post = ref(null)
+
+const { data: post, error } = await useAsyncData(
+  `blog-post-${route.params.slug}`,
+  () => queryCollection('blog').path(`/blog/${route.params.slug}`).first()
+)
 
 function formatDate(date) {
   return new Date(date).toLocaleDateString('en-US', {
@@ -48,10 +53,6 @@ function formatDate(date) {
     day: 'numeric',
   })
 }
-
-onMounted(async () => {
-  post.value = await queryContent(`blog/${route.params.slug}`).findOne()
-})
 </script>
 
 <style scoped>

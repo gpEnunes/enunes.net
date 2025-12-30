@@ -21,14 +21,10 @@ export default defineNuxtConfig({
     }
   },
   css: ['~/assets/css/theme.css'],
-  build: {
-    postcss: {
-      postcssOptions: {
-        plugins: {
-          tailwindcss: {},
-          autoprefixer: {}
-        }
-      }
+  postcss: {
+    plugins: {
+      tailwindcss: {},
+      autoprefixer: {}
     }
   },
   typescript: { shim: false },

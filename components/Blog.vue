@@ -10,6 +10,13 @@
       </div>
 
       <div class="space-y-4">
+        <div
+          v-if="!posts || posts.length === 0"
+          class="text-center py-8 text-gray-400"
+        >
+          <p>No posts available</p>
+          <p class="text-xs mt-2">🔍 posts value: {{ posts }}</p>
+        </div>
         <NuxtLink
           v-for="post in posts"
           :key="post._path"
@@ -29,9 +36,24 @@
 </template>
 
 <script setup>
-import { ref, onMounted } from 'vue'
+import { watch } from 'vue'
 
-const posts = ref([])
+const props = defineProps({
+  posts: {
+    type: Array,
+    default: () => [],
+  },
+})
+
+watch(
+  () => props.posts,
+  (newVal) => {
+    console.log('🔍 DEBUG Blog.vue - posts received:', newVal)
+    console.log('🔍 DEBUG Blog.vue - posts is null:', newVal === null)
+    console.log('🔍 DEBUG Blog.vue - posts length:', newVal?.length)
+  },
+  { immediate: true }
+)
 
 function formatDate(date) {
   return new Date(date).toLocaleDateString('en-US', {
@@ -40,8 +62,4 @@ function formatDate(date) {
     day: 'numeric',
   })
 }
-
-onMounted(async () => {
-  posts.value = await queryContent('blog').sort({ date: -1 }).find()
-})
 </script>
