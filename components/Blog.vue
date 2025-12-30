@@ -10,29 +10,38 @@
       </div>
 
       <div class="space-y-4">
-        <article class="p-4 rounded-lg border border-white/10 bg-white/5">
-          <h3 class="text-lg font-medium text-white">
-            Vue 3 Composition API Deep Dive
-          </h3>
-          <p class="text-sm text-gray-300 mt-1">
-            A comprehensive guide to mastering Vue 3's Composition API for
-            better code organization.
-          </p>
-          <div class="text-xs text-gray-400 mt-2">January 15, 2025</div>
-        </article>
-        <article class="p-4 rounded-lg border border-white/10 bg-white/5">
-          <h3 class="text-lg font-medium text-white">
-            Building Scalable APIs with Laravel
-          </h3>
-          <p class="text-sm text-gray-300 mt-1">
-            Best practices for designing REST APIs that grow with your
-            application needs.
-          </p>
-          <div class="text-xs text-gray-400 mt-2">January 8, 2025</div>
-        </article>
+        <NuxtLink
+          v-for="post in posts"
+          :key="post._path"
+          :to="post._path"
+          class="block p-4 rounded-lg border border-white/10 bg-white/5 hover:bg-white/10 transition-colors"
+        >
+          <h3 class="text-lg font-medium text-white">{{ post.title }}</h3>
+          <p class="text-sm text-gray-300 mt-1">{{ post.description }}</p>
+          <div class="flex items-center justify-between mt-2">
+            <div class="text-xs text-gray-400">{{ formatDate(post.date) }}</div>
+            <div class="text-xs text-gray-400">{{ post.author }}</div>
+          </div>
+        </NuxtLink>
       </div>
     </div>
   </section>
 </template>
 
-<script setup></script>
+<script setup>
+import { ref, onMounted } from 'vue'
+
+const posts = ref([])
+
+function formatDate(date) {
+  return new Date(date).toLocaleDateString('en-US', {
+    year: 'numeric',
+    month: 'long',
+    day: 'numeric',
+  })
+}
+
+onMounted(async () => {
+  posts.value = await queryContent('blog').sort({ date: -1 }).find()
+})
+</script>
