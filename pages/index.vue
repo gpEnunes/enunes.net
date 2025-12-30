@@ -2,15 +2,18 @@
   <div>
     <Navbar />
     <Hero />
-    <Demos />
+    <About />
+    <Portfolio />
+    <Blog />
+    <Contacts />
   </div>
 </template>
 
 <script setup>
-import { onMounted } from 'vue'
 import Navbar from '~/components/Navbar.vue'
 import Hero from '~/components/Hero.vue'
-import Demos from '~/components/Demos.vue'
-
-// no page-level demo logic: moved into components/Demos.vue
+import About from '~/components/About.vue'
+import Portfolio from '~/components/Portfolio.vue'
+import Blog from '~/components/Blog.vue'
+import Contacts from '~/components/Contacts.vue'
 </script>

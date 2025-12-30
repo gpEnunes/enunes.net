@@ -9,19 +9,9 @@
           aria-label="Main navigation"
         >
           <a
-            href="#hero"
+            href="#home"
             class="text-sm font-medium px-3 py-2 rounded-md hover:bg-white/5"
             >Home</a
-          >
-          <a
-            href="#demo"
-            class="text-sm font-medium px-3 py-2 rounded-md hover:bg-white/5"
-            >Demos</a
-          >
-          <a
-            href="#projects"
-            class="text-sm font-medium px-3 py-2 rounded-md hover:bg-white/5"
-            >Projects</a
           >
           <a
             href="#about"
@@ -29,14 +19,19 @@
             >About</a
           >
           <a
+            href="#portfolio"
+            class="text-sm font-medium px-3 py-2 rounded-md hover:bg-white/5"
+            >Portfolio</a
+          >
+          <a
             href="#blog"
             class="text-sm font-medium px-3 py-2 rounded-md hover:bg-white/5"
             >Blog</a
           >
           <a
-            href="#contact"
+            href="#contacts"
             class="text-sm font-medium px-3 py-2 rounded-md hover:bg-white/5"
-            >Contact</a
+            >Contacts</a
           >
         </nav>
 
@@ -77,19 +72,9 @@
       <div v-if="open" class="md:hidden border-t border-white/5 bg-black/60">
         <div class="px-4 py-3 space-y-1">
           <a
-            href="#hero"
+            href="#home"
             class="block text-sm font-medium px-3 py-2 rounded-md hover:bg-white/5"
             >Home</a
-          >
-          <a
-            href="#demo"
-            class="block text-sm font-medium px-3 py-2 rounded-md hover:bg-white/5"
-            >Demos</a
-          >
-          <a
-            href="#projects"
-            class="block text-sm font-medium px-3 py-2 rounded-md hover:bg-white/5"
-            >Projects</a
           >
           <a
             href="#about"
@@ -97,14 +82,19 @@
             >About</a
           >
           <a
+            href="#portfolio"
+            class="block text-sm font-medium px-3 py-2 rounded-md hover:bg-white/5"
+            >Portfolio</a
+          >
+          <a
             href="#blog"
             class="block text-sm font-medium px-3 py-2 rounded-md hover:bg-white/5"
             >Blog</a
           >
           <a
-            href="#contact"
+            href="#contacts"
             class="block text-sm font-medium px-3 py-2 rounded-md hover:bg-white/5"
-            >Contact</a
+            >Contacts</a
           >
         </div>
       </div>
