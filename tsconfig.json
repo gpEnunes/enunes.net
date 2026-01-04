@@ -6,6 +6,6 @@
     "esModuleInterop": true,
     "skipLibCheck": true,
     "strict": false,
-    "types": ["@nuxt/types"]
+    "types": ["@types/node", "nuxt", "@nuxt/content"]
   }
 }

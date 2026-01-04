@@ -7,3 +7,5 @@ dist/
 /.vscode
 *.local
 *.log
+.data/content/contents.sqlite
+/.data/content
