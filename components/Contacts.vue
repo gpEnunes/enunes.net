@@ -14,7 +14,7 @@
       <div class="space-y-4">
         <div class="p-4 rounded-lg border border-white/10 bg-white/5">
           <div class="font-medium text-white">Email</div>
-          <p class="text-sm text-gray-300 mt-1">contact@example.com</p>
+          <p class="text-sm text-gray-300 mt-1">emersonunes500[@]gmail.com</p>
         </div>
         <div class="p-4 rounded-lg border border-white/10 bg-white/5">
           <div class="font-medium text-white">LinkedIn</div>

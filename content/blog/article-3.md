@@ -1,3 +1,10 @@
+---
+title: 'Vue 3 Composition API: Patterns That Changed My Development Workflow'
+description: Practical patterns and composables that improved my Vue 3 development workflow.
+date: 2025-12-28
+author: Emerson Nunes
+---
+
 # Vue 3 Composition API: Patterns That Changed My Development Workflow
 
 _Published on December 28, 2025_

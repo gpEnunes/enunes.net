@@ -4,7 +4,7 @@
     <Hero />
     <About />
     <Portfolio />
-    <Blog :posts="posts" />
+    <Blog :posts="jsonPosts" />
     <Contacts />
   </div>
 </template>
@@ -22,6 +22,6 @@ const { data: posts, error } = await useAsyncData('blog-posts', () =>
   queryCollection('blog').order('date', 'DESC').all()
 )
 
-console.log('🔍 DEBUG index.vue - posts (from queryCollection):', posts.value)
-console.log('🔍 DEBUG index.vue - error:', error.value)
+// Ensure we pass a plain serializable array (no Proxy) to the Blog component
+const jsonPosts = JSON.parse(JSON.stringify(posts?.value || []))
 </script>
